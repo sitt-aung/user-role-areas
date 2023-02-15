@@ -24,9 +24,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
             Route::get('timetable', [\App\Http\Controllers\Student\TimetableController::class, 'index'])
                 ->name('timetable');
+        });
 
-            // Route::get('something', [\App\Http\Controllers\Student\TimetableController::class, 'something'])
-            //     ->name('something');
+    Route::prefix('teacher')
+        ->name('teacher.')
+        ->group(function () {
+            Route::get('timetable', [\App\Http\Controllers\Teacher\TimetableController::class, 'index'])
+                ->name('timetable');
         });
 });
 
