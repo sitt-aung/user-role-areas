@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Teacher;
+use App\Http\Controllers\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
             Route::get('timetable', [Teacher\TimetableController::class, 'index'])
                 ->name('timetable');
+        });
+
+    Route::middleware('role:' . \App\Enums\RoleEnum::ADMIN->value)
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            Route::get('users', [Admin\UserController::class, 'index'])
+                ->name('users');
         });
 });
 
