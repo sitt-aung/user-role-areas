@@ -18,13 +18,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::get('/student/timetable', [\App\Http\Controllers\Student\TimetableController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('student.timetable');
+    Route::prefix('student')
+        ->name('student.')
+        ->group(function () {
+            Route::get('timetable', [\App\Http\Controllers\Student\TimetableController::class, 'index'])
+                ->name('timetable');
+
+            // Route::get('something', [\App\Http\Controllers\Student\TimetableController::class, 'something'])
+            //     ->name('something');
+        });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
